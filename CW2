@@ -1,0 +1,117 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.event.*;
+import java.util.*;
+
+public class GameArena extends JFrame implements Runnable, KeyListener
+{
+	// Size of playarea
+	private int arenaWidth;
+	private int arenaHeight;
+
+	private boolean exiting = false; 
+
+	private ArrayList<Ball> balls = new ArrayList<Ball>();
+	private ArrayList<Rectangle> rectangles = new ArrayList<Rectangle>();
+
+	private boolean up = false;
+	private boolean down = false;
+	private boolean left = false;
+	private boolean right = false;
+	private boolean space = false;
+
+	private boolean rendered = false;
+
+	/**
+	 * Create a view of a GameArena.
+	 * 
+	 * @param width The width of the playing area, in pixels.
+	 * @param height The height of the playing area, in pixels.
+	 */
+	public GameArena(int width, int height)
+	{
+		this.setTitle("Let's Play!");
+		this.setSize(width, height);
+		this.setResizable(false);
+		this.setBackground(Color.BLACK);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setVisible(true);		
+	
+		Thread t = new Thread(this);
+		t.start();
+
+		this.addKeyListener(this);
+	}
+
+	public void run() {
+		try {
+			while (true) {
+				this.repaint();
+				Thread.sleep(10);
+			}
+		} catch (InterruptedException iex) {}
+	}
+
+	/**
+	 * Update the size of the GameArena.
+	 *
+	 * @param width the new width of the window in pixels.
+	 * @param height the new height of the window in pixels.
+	 */
+	public void setSize(int width, int height)
+	{
+		this.arenaWidth = width;
+		this.arenaHeight = height;
+
+		super.setSize(arenaWidth + this.getInsets().left + this.getInsets().right, arenaHeight + this.getInsets().top + this.getInsets().bottom);
+	}	
+
+	/**
+	 * Close this GameArena window.
+	 * 
+	 */
+	public void exit()
+	{
+		this.exiting = true;
+	}
+
+	/**
+	 * A method called by the operating system to draw onto the screen - <p><B>YOU DO NOT (AND SHOULD NOT) NEED TO CALL THIS METHOD.</b></p>
+	 */
+	public void paint (Graphics gr)
+	{
+		if (!rendered)
+		{
+			this.setSize(arenaWidth, arenaHeight);
+			rendered = true;
+		}
+
+		Graphics2D window = (Graphics2D) gr;
+		BufferedImage i = new BufferedImage(arenaWidth, arenaHeight, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = i.createGraphics();
+		
+		window.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		window.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
+
+		synchronized (this)
+		{
+			if (!this.exiting)
+			{
+				g.clearRect(0,0, arenaWidth, arenaHeight);
+				for(Ball b : balls)
+				{
+					g.setColor(this.getColourFromString(b.getColour()));
+					g.fillOval((int)(b.getXPosition() - b.getSize()/2), (int)(b.getYPosition() - b.getSize()/2), (int)b.getSize(), (int)b.getSize());
+				}
+
+				for(Rectangle b : rectangles)
+				{
+					g.setColor(this.getColourFromString(b.getColour()));
+					g.fillRect((int)b.getXPosition(), (int)b.getYPosition(), (int)b.getWidth(), (int)b.getHeight());
+				}
+			}
+					
+			window.drawImage(i, this.getInsets().left, this.getInsets().top, this);
+		}
+	}
