@@ -13,7 +13,14 @@ public class Board extends JFrame
     static GraphicsConfiguration Board;
     String FrogType;
     Square Square4;
-
+    Square Square5;
+    int i = 0;
+    int j = 0;
+    int d;
+    int h;
+    boolean FrogSelected;
+    boolean LilyPadSelected;
+    int NewLily;
     public Board()
     {
         
@@ -35,21 +42,21 @@ public class Board extends JFrame
         }
     public void Show()
     {
-        
         int width = 140;
         int length = 120;
         int XTR = 0;
+       
         int YTR = 0;
         int currentXTR = 0;
         int currentYTR = 0;
-        int i = 0;
-        int j = 0;
         String CurentImage;
         JButton[] buttons = new JButton[25];
         Icon Water =new ImageIcon("water.png");
         Icon LilyPad =new ImageIcon("LilyPad.png");
         Icon GreenFrog = new ImageIcon("GreenFrog.png");
         Icon RedFrog = new ImageIcon("RedFrog.png");
+        Icon RedFrog2 = new ImageIcon("RedFrog2.png");
+        Icon GreenFrog2 = new ImageIcon("GreenFrog2.png");
         JFrame frame = new JFrame(Board);	
         frame.setSize(700, 600);
 		frame.setLayout(null); 
@@ -92,6 +99,7 @@ public class Board extends JFrame
             Square4 = Squares.get(i);
             Square4.ChangeType("LilyPad");
             i = i + 2;
+            
         }
     
        
@@ -104,15 +112,88 @@ public class Board extends JFrame
             if (FrogType == "RedFrog")
             {
                 buttons[i].setIcon(RedFrog);
+
+           
             }
             else if(FrogType == "GreenFrog")
+            
             {
-                buttons[i].setIcon(GreenFrog);
+            buttons[i].setIcon(GreenFrog);
+            }
+           
+        }
+       
+        
+        i=0;
+        for(int p=0; p < 25; p++)
+        {
+            int k = p;
+            Square4 = Squares.get(k);
+            FrogType = Square4.GetType();
+            if (FrogType == "GreenFrog")
+            {
+                buttons[k].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) 
+                    {
+                        FrogSelected = true;
+                        buttons[k].setIcon(GreenFrog2);
+                        System.out.println(k);
+                        NewLily = k;
+                    }
+                });
+            }
+            else if(FrogType == "RedFrog")
+            {
+                buttons[k].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) 
+                    {
+                        buttons[k].setIcon(RedFrog2);
+                        FrogSelected = true;
+                        NewLily = k;
+                        System.out.println(k);
+                    }
+                });
             }
             
+            if(FrogType == "LilyPad")
+            {
+                buttons[k].addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) 
+                    {
+                        System.out.println(FrogSelected);
+                        if (FrogSelected == true)
+                        {
+                            Square4 = Squares.get(k);
+                            Square4.ChangeType("GreenFrog");
+                            Square4 = Squares.get(NewLily);
+                            Square4.ChangeType("LilyPad");
+                            FrogType = Square4.GetType();
+                            for (i=0;i<25;i++)
+                            {
+                                Square4 = Squares.get(i);
+                                FrogType = Square4.GetType();
+                                if (FrogType == "GreenFrog")
+                                {
+                                    buttons[i].setIcon(GreenFrog);
+                                }
+                                else if (FrogType == "LilyPad")
+                                {
+                                    buttons[i].setIcon(LilyPad);
+                                }
+                            }
+                        }
+                        FrogSelected = false;
+
+                    }
+                });
+            }
             
         }
-
+        
     }
+
    
 }
