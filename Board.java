@@ -12,6 +12,7 @@ public class Board extends JFrame
     ArrayList<Square> Squares = new ArrayList<Square>(); 
     static GraphicsConfiguration Board;
     String FrogType;
+    String FrogType2;
     Square Square4;
     Square Square5;
     int i = 0;
@@ -24,10 +25,15 @@ public class Board extends JFrame
     int GF;
     boolean GreenFrogSelected;
     boolean RedFrogSelected;
+    boolean CheckStatus;
+    JButton[] buttons = new JButton[25];
+    Icon LilyPad =new ImageIcon("LilyPad.png");
     public Board()
     {
         
     }
+    
+    
     public void FrogPostions(int a,int b, int c,int d, int e,int f)
         {
             int CurrentFrogPostion;
@@ -43,6 +49,116 @@ public class Board extends JFrame
             }
             
         }
+    public boolean FrogPostionsChecker(int CurrPos, int ArrPos, int x, int y)
+    {
+        int CurrentPosition = CurrPos;
+        int ArrangedPostion = ArrPos;
+        Square4 = Squares.get(CurrentPosition+x);
+            FrogType = Square4.GetType();
+            
+            if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + y))
+            {
+                x = CurrentPosition + x;
+                //System.out.println(x);
+                buttons[x].setIcon(LilyPad);
+                Square4 = Squares.get(x);
+                Square4.ChangeType("LilyPad");
+                return true;
+            }
+        return false;
+    }
+    public boolean LegalMove(int CurrPos, int ArrPos)
+    {
+       
+        int CurrentPosition = CurrPos;
+        int ArrangedPostion = ArrPos;
+        if (((CurrentPosition == 0) || (CurrentPosition == 10)|| (CurrentPosition == 20)))
+        {
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 2,4);
+            //System.out.println(CheckStatus);
+            if (CheckStatus == true)
+            {
+                //System.out.println("hello");
+                return true;
+            }
+        }
+           
+        else if (((CurrentPosition == 4) || (CurrentPosition == 14)|| (CurrentPosition == 24)))
+        {
+            //System.out.println(CurrentPosition);
+            //System.out.println(ArrangedPostion);
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -2,-4);
+           //System.out.println(CheckStatus);
+            if (CheckStatus == true)
+            {
+                //System.out.println("hello");
+                return true;
+            }
+           
+            
+        }
+        if (((CurrentPosition == 0) || (CurrentPosition == 2)|| (CurrentPosition == 4)))
+        {
+           CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 10,20);
+           //System.out.println(CheckStatus);
+            if (CheckStatus == true)
+            {
+                //System.out.println("hello");
+                return true;
+            }
+        }
+        else if (((CurrentPosition == 20) || (CurrentPosition == 22)|| (CurrentPosition == 24)))
+        {
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -10,-20);
+           // System.out.println(CheckStatus);
+            if (CheckStatus == true)
+            {
+               // System.out.println("hello");
+                return true;
+            }
+        }
+        if ((CurrentPosition > -1) && (CurrentPosition < 11 ))
+        {
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 6,12);
+            if (CheckStatus == true)
+            {
+               // System.out.println("hello");
+                return true;
+            }
+        }
+        if ((CurrentPosition > 11 ) && (CurrentPosition < 25 ))
+        {
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -6,-12);
+            if (CheckStatus == true)
+            {
+                //System.out.println("hello");
+                return true;
+            }
+        }
+         if ((CurrentPosition > 1 ) && (CurrentPosition < 5 ) || (CurrentPosition > 6 ) && (CurrentPosition < 9 ) || (CurrentPosition > 11 ) && (CurrentPosition < 15 ))
+        {
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 4,8);
+          if (CheckStatus == true)
+            {
+               // System.out.println("hello");
+                return true;
+            }
+        }
+         if ((CurrentPosition > 9 ) && (CurrentPosition < 13 ) || (CurrentPosition > 14 ) && (CurrentPosition < 18 ) || (CurrentPosition > 19 ) && (CurrentPosition < 23 ))
+        {
+            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -4,-8);
+           if (CheckStatus == true)
+            {
+               // System.out.println("hello");
+                return true;
+            }
+        }
+        
+        return false;
+       
+    
+        
+    }
     public void Show()
     {
         int width = 140;
@@ -53,9 +169,9 @@ public class Board extends JFrame
         int currentXTR = 0;
         int currentYTR = 0;
         String CurentImage;
-        JButton[] buttons = new JButton[25];
+        
         Icon Water =new ImageIcon("water.png");
-        Icon LilyPad =new ImageIcon("LilyPad.png");
+        
         Icon GreenFrog = new ImageIcon("GreenFrog.png");
         Icon RedFrog = new ImageIcon("RedFrog.png");
         Icon RedFrog2 = new ImageIcon("RedFrog2.png");
@@ -106,7 +222,7 @@ public class Board extends JFrame
         }
     
        
-        FrogPostions(6,8,12,20,24,22);
+        FrogPostions(2,10,14,16,24,22);
        
         for(i = 0; i < 25; i++)
         {
@@ -159,24 +275,31 @@ public class Board extends JFrame
                     }
                    // System.out.println(FrogSelected);
                     //System.out.println(FrogType);
-                    if ((FrogType == "LilyPad"))
+                    else if ((FrogType == "LilyPad"))
 
                     {
                         //System.out.println(GreenFrogSelected);
                         //System.out.println(RedFrogSelected);
                         if (GreenFrogSelected == true)
+                       
                         {
                             //System.out.println("Magic");
+                           
                             GreenFrogSelected = false;
                             int LP = k;
                             //System.out.println(GF);
                             //System.out.println(LP);
+                            boolean BooleanIsMovLeg = LegalMove(GF,LP);
+                            //System.out.println(BooleanIsMovLeg);
+                            if (BooleanIsMovLeg == true)
+                            {
                             Square4 = Squares.get(GF);
                             
                             Square5 = Squares.get(LP);
                             Square4.MoveTo(Square5);
                             buttons[LP].setIcon(GreenFrog);
                             buttons[GF].setIcon(LilyPad);
+                            }
 
                         }
                         else if (RedFrogSelected == true)
@@ -186,17 +309,22 @@ public class Board extends JFrame
                             int LP = k;
                             //System.out.println(GF);
                             //System.out.println(LP);
+                            boolean BooleanIsMovLeg = LegalMove(GF,LP);
+                            if (BooleanIsMovLeg == true)
+                            {
                             Square4 = Squares.get(GF);
-                            
                             Square5 = Squares.get(LP);
                             Square4.MoveTo(Square5);
                             buttons[LP].setIcon(RedFrog);
                             buttons[GF].setIcon(LilyPad);
+                            }
                         }
+
                     }
-                    else
+                    else if (FrogType == "Water")
                     {
-                        
+                        RedFrogSelected = false;
+                        GreenFrogSelected = false;
                     }
                   
                   
