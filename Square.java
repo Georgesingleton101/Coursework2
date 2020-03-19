@@ -54,7 +54,15 @@ public class Square extends JFrame
     public void MoveTo(Square S1)
     {
         
-        S1.ChangeType("LilyPad");
+        if (Type == "GreenFrog")
+        {
+            S1.ChangeType("GreenFrog");
+        }
+        else if(Type == "RedFrog")
+        {
+            S1.ChangeType("RedFrog");
+        }
+        Type = "LilyPad";
     }
     
 
