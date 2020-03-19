@@ -21,6 +21,9 @@ public class Board extends JFrame
     boolean FrogSelected;
     boolean LilyPadSelected;
     int NewLily;
+    int GF;
+    boolean GreenFrogSelected;
+    boolean RedFrogSelected;
     public Board()
     {
         
@@ -122,77 +125,93 @@ public class Board extends JFrame
             }
            
         }
-       
+      
         
         i=0;
-        for(int p=0; p < 25; p++)
+        for(i=0; i < 25; i++)
         {
-            int k = p;
-            Square4 = Squares.get(k);
-            FrogType = Square4.GetType();
-            if (FrogType == "GreenFrog")
+            int k = i;
+            buttons[k].addActionListener(new ActionListener() 
             {
-                buttons[k].addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) 
-                    {
-                        FrogSelected = true;
-                        buttons[k].setIcon(GreenFrog2);
-                        System.out.println(k);
-                        NewLily = k;
-                    }
-                });
-            }
-            else if(FrogType == "RedFrog")
-            {
-                buttons[k].addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) 
-                    {
-                        buttons[k].setIcon(RedFrog2);
-                        FrogSelected = true;
-                        NewLily = k;
-                        System.out.println(k);
-                    }
-                });
-            }
-            
-            if(FrogType == "LilyPad")
-            {
-                buttons[k].addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) 
-                    {
-                        System.out.println(FrogSelected);
-                        if (FrogSelected == true)
-                        {
-                            Square4 = Squares.get(k);
-                            Square4.ChangeType("GreenFrog");
-                            Square4 = Squares.get(NewLily);
-                            Square4.ChangeType("LilyPad");
-                            FrogType = Square4.GetType();
-                            for (i=0;i<25;i++)
-                            {
-                                Square4 = Squares.get(i);
-                                FrogType = Square4.GetType();
-                                if (FrogType == "GreenFrog")
-                                {
-                                    buttons[i].setIcon(GreenFrog);
-                                }
-                                else if (FrogType == "LilyPad")
-                                {
-                                    buttons[i].setIcon(LilyPad);
-                                }
-                            }
-                        }
-                        FrogSelected = false;
 
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                 
+                    Square4 = Squares.get(k);
+                    FrogType = Square4.GetType();
+                    //System.out.println(FrogType);
+                    //Square4.ChangeType("GreenFrog");
+                    if(FrogType == "GreenFrog")
+                    {
+                        //System.out.println("Hello");
+                        RedFrogSelected = false;
+                        GreenFrogSelected = true;
+                        GF = k;
+                        buttons[k].setIcon(GreenFrog2);
                     }
-                });
-            }
+                    else if(FrogType == "RedFrog")
+                    {
+                        //System.out.println("Hello");
+                        GreenFrogSelected = false;
+                        RedFrogSelected = true;
+                        GF = k;
+                        buttons[k].setIcon(RedFrog2);
+                    }
+                   // System.out.println(FrogSelected);
+                    //System.out.println(FrogType);
+                    if ((FrogType == "LilyPad"))
+
+                    {
+                        //System.out.println(GreenFrogSelected);
+                        //System.out.println(RedFrogSelected);
+                        if (GreenFrogSelected == true)
+                        {
+                            //System.out.println("Magic");
+                            GreenFrogSelected = false;
+                            int LP = k;
+                            //System.out.println(GF);
+                            //System.out.println(LP);
+                            Square4 = Squares.get(GF);
+                            
+                            Square5 = Squares.get(LP);
+                            Square4.MoveTo(Square5);
+                            buttons[LP].setIcon(GreenFrog);
+                            buttons[GF].setIcon(LilyPad);
+
+                        }
+                        else if (RedFrogSelected == true)
+                        {
+                             //System.out.println("Magic");
+                            RedFrogSelected = false;
+                            int LP = k;
+                            //System.out.println(GF);
+                            //System.out.println(LP);
+                            Square4 = Squares.get(GF);
+                            
+                            Square5 = Squares.get(LP);
+                            Square4.MoveTo(Square5);
+                            buttons[LP].setIcon(RedFrog);
+                            buttons[GF].setIcon(LilyPad);
+                        }
+                    }
+                    else
+                    {
+                        
+                    }
+                  
+                  
+                    
+                    
+                }
+            });
+
             
         }
-        
+
+
+
+            
+            
     }
 
    
