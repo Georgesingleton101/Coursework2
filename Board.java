@@ -25,9 +25,51 @@ public class Board extends JFrame
     int Level;
     Icon LilyPad =new ImageIcon("LilyPad.png");
     int[] Levels = {26};
+    int width = 140;
+    int length = 120;
+    int XTR = 0;
+    int YTR = 0;
+    int currentXTR = 0;
+    int currentYTR = 0;
+    Icon Water =new ImageIcon("water.png");
+    Icon GreenFrog = new ImageIcon("GreenFrog.png");
+    Icon RedFrog = new ImageIcon("RedFrog.png");
+    Icon RedFrog2 = new ImageIcon("RedFrog2.png");
+    Icon GreenFrog2 = new ImageIcon("GreenFrog2.png");
     public Board(int lvl)
     {
         Level = lvl;
+         for(j = 0; j < 5; j++)
+        {
+            for(int k = 0; k < 5; k++)
+            {
+                Square Square3 = new Square(currentXTR,currentYTR,width,length,"Water");
+                Squares.add(Square3);
+                currentXTR = currentXTR + 140;
+            }
+            currentXTR = 0;
+            currentYTR =   currentYTR + 120;
+        }
+        JFrame frame = new JFrame(Board);	
+        frame.setSize(700, 600);
+		frame.setLayout(null); 
+        
+     
+
+        for (i = 0; i < 25; i++) 
+        {
+            CurrentSquare = Squares.get(i);
+            XTR = CurrentSquare.GetXTR();
+            YTR = CurrentSquare.GetYTR();
+            frame.setSize(700, 600);
+		    frame.setLayout(null); 
+            buttons[i] = new JButton();
+            buttons[i].setBounds(XTR,YTR,width,length);
+            buttons[i].setIcon(Water);
+            frame.add(buttons[i]);
+            frame.setVisible(true);
+        }    
+       
     }
 
     public boolean GameWon()
@@ -123,51 +165,10 @@ public class Board extends JFrame
                 return true;
             }
         return false;
-    
     }
-    
+
     public void Show()
     {
-        int width = 140;
-        int length = 120;
-        int XTR = 0;
-        int YTR = 0;
-        int currentXTR = 0;
-        int currentYTR = 0;
-        Icon Water =new ImageIcon("water.png");
-        Icon GreenFrog = new ImageIcon("GreenFrog.png");
-        Icon RedFrog = new ImageIcon("RedFrog.png");
-        Icon RedFrog2 = new ImageIcon("RedFrog2.png");
-        Icon GreenFrog2 = new ImageIcon("GreenFrog2.png");
-        JFrame frame = new JFrame(Board);	
-        frame.setSize(700, 600);
-		frame.setLayout(null); 
-        
-        for(j = 0; j < 5; j++)
-        {
-            for(int k = 0; k < 5; k++)
-            {
-                Square Square3 = new Square(currentXTR,currentYTR,width,length,"Water");
-                Squares.add(Square3);
-                currentXTR = currentXTR + 140;
-            }
-            currentXTR = 0;
-            currentYTR =   currentYTR + 120;
-        }
-        for (i = 0; i < 25; i++) 
-        {
-            CurrentSquare = Squares.get(i);
-            XTR = CurrentSquare.GetXTR();
-            YTR = CurrentSquare.GetYTR();
-            frame.setSize(700, 600);
-		    frame.setLayout(null); 
-            buttons[i] = new JButton();
-            buttons[i].setBounds(XTR,YTR,width,length);
-            buttons[i].setIcon(Water);
-            frame.add(buttons[i]);
-            frame.setVisible(true);
-        }    
-        
         i = 0;
         while(i<25)
         {
@@ -176,7 +177,7 @@ public class Board extends JFrame
             CurrentSquare.ChangeType("LilyPad");
             i = i + 2;
         }
-    
+
        if (Level == 1)
        {
            FrogPostions(2,0,6,25,25,25,6,0);
