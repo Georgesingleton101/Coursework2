@@ -6,40 +6,47 @@ import java.util.*;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame; 
-
+/**
+*This class implements a form and defines the methods to create the hoppers game.
+*@author George Singleton
+*@version 2.0
+*/
 public class Board extends JFrame
 {
-    ArrayList<Square> Squares = new ArrayList<Square>(); 
+    private ArrayList<Square> Squares = new ArrayList<Square>(); 
     static GraphicsConfiguration Board;
-    String FrogType;
-    Square CurrentSquare;
-    Square CurrentSquare2;
-    int i = 0;
-    int j = 0;
-    boolean FrogSelected;
-    int GF;
-    boolean GreenFrogSelected;
-    boolean RedFrogSelected;
-    boolean CheckStatus;
-    JButton[] buttons = new JButton[25];
-    int Level;
-    Icon LilyPad =new ImageIcon("LilyPad.png");
-    int[] Levels = {217,24};
-    int width = 140;
-    int length = 120;
-    int XTR = 0;
-    int YTR = 0;
-    int currentXTR = 0;
-    int currentYTR = 0;
-    Icon Water =new ImageIcon("water.png");
-    Icon GreenFrog = new ImageIcon("GreenFrog.png");
-    Icon RedFrog = new ImageIcon("RedFrog.png");
-    Icon RedFrog2 = new ImageIcon("RedFrog2.png");
-    Icon GreenFrog2 = new ImageIcon("GreenFrog2.png");
+    private String FrogType;
+    private Square CurrentSquare;
+    private Square CurrentSquare2;
+    private int i = 0;
+    private int j = 0;
+    private boolean FrogSelected;
+    private int GF;
+    private boolean GreenFrogSelected;
+    private boolean RedFrogSelected;
+    private JButton[] buttons = new JButton[25];
+    private int Level;
+    private Icon LilyPad =new ImageIcon("LilyPad.png");
+    private int[] Levels = {206,24};
+    private int width = 140;
+    private int length = 120;
+    private int XTR = 0;
+    private int YTR = 0;
+    private int currentXTR = 0;
+    private int currentYTR = 0;
+    private Icon Water =new ImageIcon("water.png");
+    private Icon GreenFrog = new ImageIcon("GreenFrog.png");
+    private Icon RedFrog = new ImageIcon("RedFrog.png");
+    private Icon RedFrog2 = new ImageIcon("RedFrog2.png");
+   private  Icon GreenFrog2 = new ImageIcon("GreenFrog2.png");
+    /**
+    *This constructor 
+    *@param lvl the level of the game to be played 
+    */
     public Board(int lvl)
     {
         Level = lvl;
-         for(j = 0; j < 5; j++)
+        for(j = 0; j < 5; j++)
         {
             for(int k = 0; k < 5; k++)
             {
@@ -54,8 +61,6 @@ public class Board extends JFrame
         frame.setSize(700, 600);
 		frame.setLayout(null); 
         
-     
-
         for (i = 0; i < 25; i++) 
         {
             CurrentSquare = Squares.get(i);
@@ -69,14 +74,17 @@ public class Board extends JFrame
             frame.add(buttons[i]);
             frame.setVisible(true);
         }    
-       
     }
-
+    
+    /**
+	* When called this method checks to see if the game has been won
+	* @return boolean state if game has been won or not
+	*/
     public boolean GameWon()
     {
         for(i = 0; i < 25; i ++)
         {
-            int j = i;
+            j = i;
             CurrentSquare = Squares.get(j);
             FrogType = CurrentSquare.GetType();
             if (FrogType == "GreenFrog")
@@ -86,31 +94,45 @@ public class Board extends JFrame
         }
         return true;
     }
-  
-    public void FrogPostions(int NumFrogs, int a,int b, int c,int d, int e,int f,int g)//change these to better names
+
+    /**
+	*This method changes the type of the squares to the appropiate type
+	* @param NumFrogs number of frogs to be placed in the game
+    * @param RedFrogPosition position for the red frog to be placed
+    * @param GreenFrog1Pos position for the first green frog to be placed
+    * @param GreenFrog2Pos position for the second green frog to be placed
+    * @param GreenFrog3Pos position for the third green frog to be placed
+    * @param GreenFrog4Pos position for the fourth green frog to be placed
+    * @param GreenFrog5Pos position for the fifth green frog to be placed
+    * @param GreenFrog6Pos position for the sixth green frog to be placed
+	*/
+    public void FrogPostions(int NumFrogs, int RedFrogPos,int GreenFrog1Pos, int GreenFrog2Pos,int GreenFrog3Pos, int GreenFrog4Pos,int GreenFrog5Pos,int GreenFrog6Pos)
     {
-            int NumberOfFrogs = NumFrogs;
-            int CurrentFrogPostion;
-            int[] FrogsPositions = {a,b,c,d,e,f,g};
-            CurrentFrogPostion = FrogsPositions[0];
-            CurrentSquare = Squares.get(CurrentFrogPostion);
-            CurrentSquare.ChangeType("RedFrog");
-            for(int i = 1; i < NumberOfFrogs + 1; i++)
+        int NumberOfFrogs = NumFrogs;
+        int CurrentFrogsPositiontion;
+        int[] FrogsPositions = {RedFrogPos,GreenFrog1Pos,GreenFrog2Pos,GreenFrog3Pos,GreenFrog4Pos,GreenFrog5Pos,GreenFrog6Pos};
+        CurrentFrogsPositiontion = FrogsPositions[0];
+        CurrentSquare = Squares.get(CurrentFrogsPositiontion);
+        CurrentSquare.ChangeType("RedFrog");
+        for(int i = 1; i < NumberOfFrogs + 1; i++)
+        {
+            CurrentFrogsPositiontion = FrogsPositions[i];
+            if (CurrentFrogsPositiontion == 25)
+            {}
+            else 
             {
-                CurrentFrogPostion = FrogsPositions[i];
-                if (CurrentFrogPostion == 25)
-                {}
-                else 
-                {
-                    CurrentSquare = Squares.get(CurrentFrogPostion);
-                    CurrentSquare.ChangeType("GreenFrog"); 
-                }
+                CurrentSquare = Squares.get(CurrentFrogsPositiontion);
+                CurrentSquare.ChangeType("GreenFrog"); 
             }
-            
+        }
     }
+
+    /**
+	* This method is part of the level system which decodes the level array to find the appropiate level position
+	* @param lvl the level the user wishes to play
+	*/
     public void GetFrogsPostions(int lvl)
     {
-        
         int[] FrogsPositionStore = {25,25,25,25,25,25,25};
         Level = lvl;
         int IntLevelData = Levels[Level-1];
@@ -123,40 +145,56 @@ public class Board extends JFrame
         {
             String StringTest = StringLevelData.substring(i,i+1);
             int IntTest = Integer.valueOf(StringTest);
-            IntTest = IntTest -1;
+            //IntTest = IntTest -1;
             //System.out.println(Test);
-            if (IntTest == -1)
+            if (IntTest == -100)
             {
-                System.out.println("Nice");
+                //StringTest = StringLevelData.substring(i+1,i+3);
+                //IntTest = Integer.valueOf(StringTest);
+                //System.out.println(IntTest);
             }
             else 
             {
-                
                 FrogsPositionStore[i-1] = IntTest;
+                System.out.println(IntTest);
             }
         }
         FrogPostions(IntNumberOfFrogs,FrogsPositionStore[0] ,FrogsPositionStore[1],FrogsPositionStore[2] ,FrogsPositionStore[3],FrogsPositionStore[4],FrogsPositionStore[5],FrogsPositionStore[6]);
     }
-    public boolean FrogPostionsChecker(int CurrPos, int ArrPos, int x, int y)
+
+    /**
+	* This method is checks to see if the preposed move positions is legal or not and in combination with the legal move function can return if the move is legal or not
+	* @param CurrPos the current position of the frog before the move is taken
+    * @param ArrPos the preposed position of the frog after the move is taken
+    * @param JumpedOverSquare the number added to the currentpositon to find the square that is being jumped over
+    * @param ArrPos the number added to the currentposition to find and check the arranged position is correct before a move is preformed
+	*/
+    public boolean FrogPostionsChecker(int CurrPos, int ArrPos, int JumpedOverSquare, int JumpedToSquare)
     {
         int CurrentPosition = CurrPos;
         int ArrangedPostion = ArrPos;
-        CurrentSquare = Squares.get(CurrentPosition+x);
+        CurrentSquare = Squares.get(CurrentPosition+JumpedOverSquare);
             FrogType = CurrentSquare.GetType();
-            if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + y))
+            if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + JumpedToSquare))
             {
-                //System.out.println(x);
-                x = CurrentPosition + x;
-                buttons[x].setIcon(LilyPad);
-                CurrentSquare = Squares.get(x);
+                //System.out.println(JumpedOverSquare);
+                JumpedOverSquare = CurrentPosition + JumpedOverSquare;
+                buttons[JumpedOverSquare].setIcon(LilyPad);
+                CurrentSquare = Squares.get(JumpedOverSquare);
                 CurrentSquare.ChangeType("LilyPad");
-                //System.out.println(x);
+                //System.out.println(JumpedOverSquare);
                 return true;
             }
         return false;
     }
+    /**
+	* This method is checks the current position and then defines the appropiate possible moves that can be taken, in combination with the FrogPositionChecker function it will decide if a move is legal or not
+	* @param CurrPos the current position of the frog before the move is taken
+    * @param ArrPos the preposed position of the frog after the move is taken
+    */
     public boolean LegalMove(int CurrPos, int ArrPos)
     {
+        boolean CheckStatus = false;
         int CurrentPosition = CurrPos;
         int ArrangedPostion = ArrPos;
         if (((CurrentPosition == 0) || (CurrentPosition == 10)|| (CurrentPosition == 20)))
@@ -223,9 +261,16 @@ public class Board extends JFrame
                 return true;
             }
         }
-        
+        if (CheckStatus == true)
+        {
+                return true;
+        }
         return false;
     }
+
+    /**
+	* This method resets the buttons to the default type contained in it's square class
+    */
     public void ResetDefaultSquares()
     {
         for(i = 0; i < 25; i++)
@@ -233,15 +278,19 @@ public class Board extends JFrame
             CurrentSquare = Squares.get(i);
             FrogType = CurrentSquare.GetType();
             if (FrogType == "RedFrog")
-                 {
-                        buttons[i].setIcon(RedFrog);
-                    }
-                    else if(FrogType == "GreenFrog")
-                    {
-                    buttons[i].setIcon(GreenFrog);
-                    }
+            {
+                buttons[i].setIcon(RedFrog);
+            }
+            else if(FrogType == "GreenFrog")
+            {
+                buttons[i].setIcon(GreenFrog);
+            }
         }
     }
+
+    /**
+	* This method sets up the default position of the lilypads 
+    */
     public void SetLilyPads()
     {
          i = 0;
@@ -253,14 +302,13 @@ public class Board extends JFrame
             i = i + 2;
         }
     }
-
-    public void Show()
+    /**
+	* This method sets up the click action in which it will check if a frog then a lilypad is pressed and if so will move the frog acordingly.It will also print out a message if the game has been won.
+    */
+    public void SetOnClick()
     {
-        
-        
-        GetFrogsPostions(Level);
+        //FrogPostions(4,2,6,8,16,18,25,25);
         ResetDefaultSquares();
-        
         for(i=0; i < 25; i++)
         {
             int k = i;
@@ -278,6 +326,7 @@ public class Board extends JFrame
                         GF = k;
                         buttons[k].setIcon(GreenFrog2);
                     }
+
                     else if(FrogType == "RedFrog")
                     {
                         GreenFrogSelected = false;
@@ -289,7 +338,6 @@ public class Board extends JFrame
 
                     {
                         if (GreenFrogSelected == true)
-                       
                         {
                             GreenFrogSelected = false;
                             int LP = k;
@@ -297,14 +345,12 @@ public class Board extends JFrame
                             if (BooleanIsMovLeg == true)
                             {
                                 CurrentSquare = Squares.get(GF);
-                                
                                 CurrentSquare2 = Squares.get(LP);
                                 CurrentSquare.MoveTo(CurrentSquare2);
                                 buttons[LP].setIcon(GreenFrog);
                                 buttons[GF].setIcon(LilyPad);
                             }
                         }
-
                         else if (RedFrogSelected == true)
                         {
                             RedFrogSelected = false;
@@ -325,6 +371,7 @@ public class Board extends JFrame
                         RedFrogSelected = false;
                         GreenFrogSelected = false;
                     }
+
                 boolean Won = GameWon();
                 if (Won == true)
                 {
