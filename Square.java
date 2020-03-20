@@ -1,7 +1,7 @@
 /**
 *This class models a simple square. When combined with the Board class instances of the square can displayed on screen.
 *@author George Singleton
-*@version 2.0
+*@version 2.1
 */
 public class Square 
 {
@@ -80,6 +80,7 @@ public class Square
 	*/
     public void MoveTo(Square Square1)
     {
+        //Type of currentpositon of frog checked to see what the type of the arranged position of the frog should be.
         if (Type == "GreenFrog")
         {
             Square1.ChangeType("GreenFrog");

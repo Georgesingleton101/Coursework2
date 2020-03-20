@@ -1,6 +1,11 @@
 public class CW2Main
 {
-     public static void main(String[] arguments)
+/**
+*This class is the main class which utilises the other classes to run the game.
+*@author George Singleton
+*@version 2.1
+*/
+    public static void main(String[] arguments)
     {
         Board GameBoard = new Board(1);
         GameBoard.SetLilyPads();

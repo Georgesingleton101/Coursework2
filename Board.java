@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 /**
 *This class implements a form and defines the methods to create the hoppers game.
 *@author George Singleton
-*@version 2.0
+*@version 2.1
 */
 public class Board extends JFrame
 {
@@ -46,28 +46,33 @@ public class Board extends JFrame
     public Board(int lvl)
     {
         Level = lvl;
+        //loops five times to generate the five columns of squares
         for(j = 0; j < 5; j++)
         {
+            //loops five times to generate the five rows of squares
             for(int k = 0; k < 5; k++)
             {
                 Square Square3 = new Square(currentXTR,currentYTR,width,length,"Water");
                 Squares.add(Square3);
+                //Frame is 710 wide , devide by 5 because 5 there's squares and take a few pixels off to get 140.
                 currentXTR = currentXTR + 140;
             }
+            //
             currentXTR = 0;
+            //Frame is 635, devide by 5 because 5 there's squares and take a few pixels off to get 120
             currentYTR =   currentYTR + 120;
         }
+        //this Jframe will be the form in which my game will be played
         JFrame frame = new JFrame(Board);	
-        frame.setSize(700, 600);
+        frame.setSize(710, 635);
 		frame.setLayout(null); 
-        
+
+        //loops around each square and generates each square in on the form
         for (i = 0; i < 25; i++) 
         {
             CurrentSquare = Squares.get(i);
             XTR = CurrentSquare.GetXTR();
             YTR = CurrentSquare.GetYTR();
-            frame.setSize(700, 600);
-		    frame.setLayout(null); 
             buttons[i] = new JButton();
             buttons[i].setBounds(XTR,YTR,width,length);
             buttons[i].setIcon(Water);
@@ -77,11 +82,12 @@ public class Board extends JFrame
     }
     
     /**
-	* When called this method checks to see if the game has been won
+	* When called this method checks to see if the game has been won or not
 	* @return boolean state if game has been won or not
 	*/
-    public boolean GameWon()
+    private boolean GameWon()
     {
+        //loops to check each squares type is or isn't a green frog ,if there's no green frogs then the user must of won
         for(i = 0; i < 25; i ++)
         {
             j = i;
@@ -111,12 +117,15 @@ public class Board extends JFrame
         int NumberOfFrogs = NumFrogs;
         int CurrentFrogsPositiontion;
         int[] FrogsPositions = {RedFrogPos,GreenFrog1Pos,GreenFrog2Pos,GreenFrog3Pos,GreenFrog4Pos,GreenFrog5Pos,GreenFrog6Pos};
+        //sets the red frogs poition
         CurrentFrogsPositiontion = FrogsPositions[0];
         CurrentSquare = Squares.get(CurrentFrogsPositiontion);
         CurrentSquare.ChangeType("RedFrog");
+        //loops around and sets each of the green frogs positions
         for(int i = 1; i < NumberOfFrogs + 1; i++)
         {
             CurrentFrogsPositiontion = FrogsPositions[i];
+            //since the number of frogss is variable and the number of things passed into a function is not, i used 25 so that i could pass in a parameter that would do nothing and not add a frog
             if (CurrentFrogsPositiontion == 25)
             {}
             else 
@@ -131,7 +140,7 @@ public class Board extends JFrame
 	* This method is part of the level system which decodes the level array to find the appropiate level position
 	* @param lvl the level the user wishes to play
 	*/
-    public void GetFrogsPostions(int lvl)
+    private void GetFrogsPostions(int lvl)
     {
         int[] FrogsPositionStore = {25,25,25,25,25,25,25};
         Level = lvl;
@@ -163,28 +172,30 @@ public class Board extends JFrame
     }
 
     /**
-	* This method is checks to see if the preposed move positions is legal or not and in combination with the legal move function can return if the move is legal or not
+	* This method is checks to see if the preposed move positions are legal or not and in combination with the legal move function can return if the move is legal or not
 	* @param CurrPos the current position of the frog before the move is taken
     * @param ArrPos the preposed position of the frog after the move is taken
     * @param JumpedOverSquare the number added to the currentpositon to find the square that is being jumped over
     * @param ArrPos the number added to the currentposition to find and check the arranged position is correct before a move is preformed
 	*/
-    public boolean FrogPostionsChecker(int CurrPos, int ArrPos, int JumpedOverSquare, int JumpedToSquare)
+    private boolean FrogPostionsChecker(int CurrPos, int ArrPos, int JumpedOverSquare, int JumpedToSquare)
     {
         int CurrentPosition = CurrPos;
         int ArrangedPostion = ArrPos;
+        //obtains the middle squares type to see if it can be jumped over
         CurrentSquare = Squares.get(CurrentPosition+JumpedOverSquare);
-            FrogType = CurrentSquare.GetType();
-            if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + JumpedToSquare))
-            {
-                //System.out.println(JumpedOverSquare);
-                JumpedOverSquare = CurrentPosition + JumpedOverSquare;
-                buttons[JumpedOverSquare].setIcon(LilyPad);
-                CurrentSquare = Squares.get(JumpedOverSquare);
-                CurrentSquare.ChangeType("LilyPad");
-                //System.out.println(JumpedOverSquare);
-                return true;
-            }
+        FrogType = CurrentSquare.GetType();
+        //checks to see if the square attempting to be jumped over is a green frog and that the arranged position is correct 
+        if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + JumpedToSquare))
+        {
+            //System.out.println(JumpedOverSquare);
+            JumpedOverSquare = CurrentPosition + JumpedOverSquare;
+            buttons[JumpedOverSquare].setIcon(LilyPad);
+            CurrentSquare = Squares.get(JumpedOverSquare);
+            CurrentSquare.ChangeType("LilyPad");
+            //System.out.println(JumpedOverSquare);
+            return true;
+        }
         return false;
     }
     /**
@@ -192,7 +203,7 @@ public class Board extends JFrame
 	* @param CurrPos the current position of the frog before the move is taken
     * @param ArrPos the preposed position of the frog after the move is taken
     */
-    public boolean LegalMove(int CurrPos, int ArrPos)
+    private boolean LegalMove(int CurrPos, int ArrPos)
     {
         boolean CheckStatus = false;
         int CurrentPosition = CurrPos;
@@ -271,7 +282,7 @@ public class Board extends JFrame
     /**
 	* This method resets the buttons to the default type contained in it's square class
     */
-    public void ResetDefaultSquares()
+    private void ResetDefaultSquares()
     {
         for(i = 0; i < 25; i++)
         {
