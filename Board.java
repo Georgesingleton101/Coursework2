@@ -116,10 +116,12 @@ public class Board extends JFrame
             FrogType = CurrentSquare.GetType();
             if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + y))
             {
+                System.out.println(x);
                 x = CurrentPosition + x;
                 buttons[x].setIcon(LilyPad);
                 CurrentSquare = Squares.get(x);
                 CurrentSquare.ChangeType("LilyPad");
+                System.out.println(x);
                 return true;
             }
         return false;
@@ -131,40 +133,86 @@ public class Board extends JFrame
         if (((CurrentPosition == 0) || (CurrentPosition == 10)|| (CurrentPosition == 20)))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 2,4);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }  
         else if (((CurrentPosition == 4) || (CurrentPosition == 14)|| (CurrentPosition == 24)))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -2,-4);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }
         if (((CurrentPosition == 0) || (CurrentPosition == 2)|| (CurrentPosition == 4)))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 10,20);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }
         else if (((CurrentPosition == 20) || (CurrentPosition == 22)|| (CurrentPosition == 24)))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -10,-20);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }
         if ((CurrentPosition > -1) && (CurrentPosition < 11 ))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 6,12);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }
         if ((CurrentPosition > 11 ) && (CurrentPosition < 25 ))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -6,-12);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }
          if ((CurrentPosition > 1 ) && (CurrentPosition < 5 ) || (CurrentPosition > 6 ) && (CurrentPosition < 9 ) || (CurrentPosition > 11 ) && (CurrentPosition < 15 ))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 4,8);
+            if (CheckStatus == true)
+            {
+                return true;
+            }
         }
          if ((CurrentPosition > 9 ) && (CurrentPosition < 13 ) || (CurrentPosition > 14 ) && (CurrentPosition < 18 ) || (CurrentPosition > 19 ) && (CurrentPosition < 23 ))
         {
             CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -4,-8);
-        }
-        if (CheckStatus == true)
+            if (CheckStatus == true)
             {
                 return true;
             }
+        }
+        
         return false;
+    }
+    public void ResetDefaultSquares()
+    {
+        for(i = 0; i < 25; i++)
+        {
+            CurrentSquare = Squares.get(i);
+            FrogType = CurrentSquare.GetType();
+            if (FrogType == "RedFrog")
+                 {
+                        buttons[i].setIcon(RedFrog);
+                    }
+                    else if(FrogType == "GreenFrog")
+                    
+                    {
+                    buttons[i].setIcon(GreenFrog);
+                    }
+        }
     }
 
     public void Show()
@@ -180,23 +228,11 @@ public class Board extends JFrame
 
        if (Level == 1)
        {
-           FrogPostions(2,0,6,25,25,25,6,0);
+           FrogPostions(6,0,6,8,10,12,14,16);
        }
+        ResetDefaultSquares();
         
-        for(i = 0; i < 25; i++)
-        {
-            CurrentSquare = Squares.get(i);
-            FrogType = CurrentSquare.GetType();
-            if (FrogType == "RedFrog")
-            {
-                buttons[i].setIcon(RedFrog);
-            }
-            else if(FrogType == "GreenFrog")
-            
-            {
-            buttons[i].setIcon(GreenFrog);
-            }
-        }
+            ResetDefaultSquares();
       
         i=0;
         for(i=0; i < 25; i++)
@@ -205,6 +241,7 @@ public class Board extends JFrame
             buttons[k].addActionListener(new ActionListener() 
             {
                 public void actionPerformed(ActionEvent e) {
+                    ResetDefaultSquares();
                     CurrentSquare = Squares.get(k);
                     FrogType = CurrentSquare.GetType();
                     
@@ -239,7 +276,9 @@ public class Board extends JFrame
                                 CurrentSquare.MoveTo(CurrentSquare2);
                                 buttons[LP].setIcon(GreenFrog);
                                 buttons[GF].setIcon(LilyPad);
-                                }
+                            }
+                            
+
 
                         }
                         else if (RedFrogSelected == true)
