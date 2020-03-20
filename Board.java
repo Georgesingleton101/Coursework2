@@ -24,7 +24,7 @@ public class Board extends JFrame
     JButton[] buttons = new JButton[25];
     int Level;
     Icon LilyPad =new ImageIcon("LilyPad.png");
-    int[] Levels = {26};
+    int[] Levels = {26,};
     int width = 140;
     int length = 120;
     int XTR = 0;
@@ -86,8 +86,12 @@ public class Board extends JFrame
         }
         return true;
     }
-    
-    public void FrogPostions(int NumFrogs, int a,int b, int c,int d, int e,int f,int g)
+    public void GetFrogsPostions()
+    {
+        int leveldata = Levels[Level-1];
+        System.out.println(leveldata);
+    }
+    public void FrogPostions(int NumFrogs, int a,int b, int c,int d, int e,int f,int g)//change these to better names
     {
             int NumberOfFrogs = NumFrogs;
             int CurrentFrogPostion;
@@ -208,16 +212,14 @@ public class Board extends JFrame
                         buttons[i].setIcon(RedFrog);
                     }
                     else if(FrogType == "GreenFrog")
-                    
                     {
                     buttons[i].setIcon(GreenFrog);
                     }
         }
     }
-
-    public void Show()
+    public void SetLilyPads()
     {
-        i = 0;
+         i = 0;
         while(i<25)
         {
             buttons[i].setIcon(LilyPad);
@@ -225,16 +227,14 @@ public class Board extends JFrame
             CurrentSquare.ChangeType("LilyPad");
             i = i + 2;
         }
+    }
 
-       if (Level == 1)
-       {
-           FrogPostions(6,0,6,8,10,12,14,16);
-       }
+    public void Show()
+    {
+        FrogPostions(6,0,6,8,10,12,14,16);
         ResetDefaultSquares();
+        GetFrogsPostions();
         
-            ResetDefaultSquares();
-      
-        i=0;
         for(i=0; i < 25; i++)
         {
             int k = i;
@@ -277,10 +277,8 @@ public class Board extends JFrame
                                 buttons[LP].setIcon(GreenFrog);
                                 buttons[GF].setIcon(LilyPad);
                             }
-                            
-
-
                         }
+
                         else if (RedFrogSelected == true)
                         {
                             RedFrogSelected = false;
