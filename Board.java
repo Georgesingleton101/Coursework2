@@ -24,7 +24,7 @@ public class Board extends JFrame
     JButton[] buttons = new JButton[25];
     int Level;
     Icon LilyPad =new ImageIcon("LilyPad.png");
-    int[] Levels = {26,};
+    int[] Levels = {217,24};
     int width = 140;
     int length = 120;
     int XTR = 0;
@@ -86,18 +86,14 @@ public class Board extends JFrame
         }
         return true;
     }
-    public void GetFrogsPostions()
-    {
-        int leveldata = Levels[Level-1];
-        System.out.println(leveldata);
-    }
+  
     public void FrogPostions(int NumFrogs, int a,int b, int c,int d, int e,int f,int g)//change these to better names
     {
             int NumberOfFrogs = NumFrogs;
             int CurrentFrogPostion;
             int[] FrogsPositions = {a,b,c,d,e,f,g};
             CurrentFrogPostion = FrogsPositions[0];
-             CurrentSquare = Squares.get(CurrentFrogPostion);
+            CurrentSquare = Squares.get(CurrentFrogPostion);
             CurrentSquare.ChangeType("RedFrog");
             for(int i = 1; i < NumberOfFrogs + 1; i++)
             {
@@ -106,11 +102,40 @@ public class Board extends JFrame
                 {}
                 else 
                 {
-                   CurrentSquare = Squares.get(CurrentFrogPostion);
-                CurrentSquare.ChangeType("GreenFrog"); 
+                    CurrentSquare = Squares.get(CurrentFrogPostion);
+                    CurrentSquare.ChangeType("GreenFrog"); 
                 }
             }
             
+    }
+    public void GetFrogsPostions(int lvl)
+    {
+        
+        int[] FrogsPositionStore = {25,25,25,25,25,25,25};
+        Level = lvl;
+        int IntLevelData = Levels[Level-1];
+        //System.out.println(IntLevelData);
+        String StringLevelData = String.valueOf(IntLevelData);
+        String StringNumberOfFrogs = StringLevelData.substring(0,1);
+        int IntNumberOfFrogs = Integer.valueOf(StringNumberOfFrogs);
+        System.out.println(IntNumberOfFrogs);
+        for (i=1; i < IntNumberOfFrogs+1;i++)
+        {
+            String StringTest = StringLevelData.substring(i,i+1);
+            int IntTest = Integer.valueOf(StringTest);
+            IntTest = IntTest -1;
+            //System.out.println(Test);
+            if (IntTest == -1)
+            {
+                System.out.println("Nice");
+            }
+            else 
+            {
+                
+                FrogsPositionStore[i-1] = IntTest;
+            }
+        }
+        FrogPostions(IntNumberOfFrogs,FrogsPositionStore[0] ,FrogsPositionStore[1],FrogsPositionStore[2] ,FrogsPositionStore[3],FrogsPositionStore[4],FrogsPositionStore[5],FrogsPositionStore[6]);
     }
     public boolean FrogPostionsChecker(int CurrPos, int ArrPos, int x, int y)
     {
@@ -120,12 +145,12 @@ public class Board extends JFrame
             FrogType = CurrentSquare.GetType();
             if ((FrogType == "GreenFrog") && (ArrangedPostion == CurrentPosition + y))
             {
-                System.out.println(x);
+                //System.out.println(x);
                 x = CurrentPosition + x;
                 buttons[x].setIcon(LilyPad);
                 CurrentSquare = Squares.get(x);
                 CurrentSquare.ChangeType("LilyPad");
-                System.out.println(x);
+                //System.out.println(x);
                 return true;
             }
         return false;
@@ -231,9 +256,10 @@ public class Board extends JFrame
 
     public void Show()
     {
-        FrogPostions(6,0,6,8,10,12,14,16);
+        
+        
+        GetFrogsPostions(Level);
         ResetDefaultSquares();
-        GetFrogsPostions();
         
         for(i=0; i < 25; i++)
         {
