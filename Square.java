@@ -1,7 +1,7 @@
 /**
 *This class models a simple square. When combined with the Board class instances of the square can displayed on screen.
 *@author George Singleton
-*@version 2.1
+*@version 2.2
 */
 public class Square 
 {

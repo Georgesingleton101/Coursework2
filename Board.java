@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 /**
 *This class implements a form and defines the methods to create the hoppers game.
 *@author George Singleton
-*@version 2.1
+*@version 2.2
 */
 public class Board extends JFrame
 {
@@ -46,6 +46,7 @@ public class Board extends JFrame
     public Board(int lvl)
     {
         Level = lvl;
+        //frogs are indexed from 0 to 24 countings from left to right with the top left corner being frog0 and the bottom right being 24. The same indexing is done for buttons as well.
         //loops five times to generate the five columns of squares
         for(j = 0; j < 5; j++)
         {
@@ -125,7 +126,7 @@ public class Board extends JFrame
         for(int i = 1; i < NumberOfFrogs + 1; i++)
         {
             CurrentFrogsPositiontion = FrogsPositions[i];
-            //since the number of frogss is variable and the number of things passed into a function is not, i used 25 so that i could pass in a parameter that would do nothing and not add a frog
+            //since the number of frogs is variable and the number of things passed into a function is not, i used 25 so that i could pass in a parameter that would do nothing and not add a frog
             if (CurrentFrogsPositiontion == 25)
             {}
             else 
@@ -142,8 +143,10 @@ public class Board extends JFrame
 	*/
     private void GetFrogsPostions(int lvl)
     {
+        //when passed into frogspostion 25 does nothing, this is basicly repersenting an empty board(0 can't be used as its a position on the board)
         int[] FrogsPositionStore = {25,25,25,25,25,25,25};
         Level = lvl;
+        //cv    
         int IntLevelData = Levels[Level-1];
         //System.out.println(IntLevelData);
         String StringLevelData = String.valueOf(IntLevelData);
@@ -205,74 +208,53 @@ public class Board extends JFrame
     */
     private boolean LegalMove(int CurrPos, int ArrPos)
     {
-        boolean CheckStatus = false;
+        /*defines and intialises variables to store is the move is legal or not
+        only one checkstatus variable cannot be used as there is mutliple moves for one square and one move could set the bool to true and then the next one could set the bool to false which would return false overall even
+        though the move is legal.
+        */ 
+        boolean CheckStatus1,CheckStatus2,CheckStatus3,CheckStatus4,CheckStatus5,CheckStatus6,CheckStatus7,CheckStatus8;
+        CheckStatus1 = CheckStatus2 = CheckStatus3= CheckStatus4 = CheckStatus5 = CheckStatus6 = CheckStatus7 = CheckStatus8 = false;
+        boolean SavedCheckStatus;
         int CurrentPosition = CurrPos;
         int ArrangedPostion = ArrPos;
+        //checks which square was selected and then passes in the correct values into frogpositionchecker for a move to be checked is legal
         if (((CurrentPosition == 0) || (CurrentPosition == 10)|| (CurrentPosition == 20)))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 2,4);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            /*for the move of a frog from left to right across the board 2 and 4 are passed in as the frog to be jumped over will be on the current frogsposition+2 and 4 is passed in as the arranged position should be on
+            the currentposition +4.
+            */
+            CheckStatus1 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 2,4);
         }  
         else if (((CurrentPosition == 4) || (CurrentPosition == 14)|| (CurrentPosition == 24)))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -2,-4);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus2 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -2,-4);
         }
         if (((CurrentPosition == 0) || (CurrentPosition == 2)|| (CurrentPosition == 4)))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 10,20);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus3 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 10,20);
         }
         else if (((CurrentPosition == 20) || (CurrentPosition == 22)|| (CurrentPosition == 24)))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -10,-20);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus4 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -10,-20);
         }
         if ((CurrentPosition > -1) && (CurrentPosition < 11 ))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 6,12);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus5 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 6,12);
         }
         if ((CurrentPosition > 11 ) && (CurrentPosition < 25 ))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -6,-12);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus6 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -6,-12);
         }
          if ((CurrentPosition > 1 ) && (CurrentPosition < 5 ) || (CurrentPosition > 6 ) && (CurrentPosition < 9 ) || (CurrentPosition > 11 ) && (CurrentPosition < 15 ))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 4,8);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus7 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, 4,8);
         }
          if ((CurrentPosition > 9 ) && (CurrentPosition < 13 ) || (CurrentPosition > 14 ) && (CurrentPosition < 18 ) || (CurrentPosition > 19 ) && (CurrentPosition < 23 ))
         {
-            CheckStatus = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -4,-8);
-            if (CheckStatus == true)
-            {
-                return true;
-            }
+            CheckStatus8 = FrogPostionsChecker(CurrentPosition, ArrangedPostion, -4,-8);
+
         }
-        if (CheckStatus == true)
+        if ((CheckStatus1 == true) ||  (CheckStatus2 == true) ||  (CheckStatus3 == true) ||  (CheckStatus4 == true) ||  (CheckStatus5 == true) ||  (CheckStatus6 == true) ||  (CheckStatus7 == true) || (CheckStatus8 == true))  
         {
                 return true;
         }
@@ -284,6 +266,7 @@ public class Board extends JFrame
     */
     private void ResetDefaultSquares()
     {
+        //loops from 0 to 24 to access each squares type and then repersent it on screen
         for(i = 0; i < 25; i++)
         {
             CurrentSquare = Squares.get(i);
@@ -304,13 +287,12 @@ public class Board extends JFrame
     */
     public void SetLilyPads()
     {
-         i = 0;
-        while(i<25)
+        //loops around and sets every second sqaure to a lilypad because thats the design of all levels before frogs are implemented.
+        for(i=0;i<25;i = i + 2)
         {
             buttons[i].setIcon(LilyPad);
             CurrentSquare = Squares.get(i);
             CurrentSquare.ChangeType("LilyPad");
-            i = i + 2;
         }
     }
     /**
@@ -320,16 +302,18 @@ public class Board extends JFrame
     {
         //FrogPostions(4,2,6,8,16,18,25,25);
         ResetDefaultSquares();
+        //loops around so it adds the action listener to each button
         for(i=0; i < 25; i++)
         {
             int k = i;
             buttons[k].addActionListener(new ActionListener() 
             {
                 public void actionPerformed(ActionEvent e) {
+                    //resets squares back to normal so if a frog is selected and then a non legal move is attempted it will deselect the frog
                     ResetDefaultSquares();
                     CurrentSquare = Squares.get(k);
                     FrogType = CurrentSquare.GetType();
-                    
+                    // 
                     if(FrogType == "GreenFrog")
                     {
                         RedFrogSelected = false;
@@ -337,7 +321,7 @@ public class Board extends JFrame
                         GF = k;
                         buttons[k].setIcon(GreenFrog2);
                     }
-
+                    //selects green frog 
                     else if(FrogType == "RedFrog")
                     {
                         GreenFrogSelected = false;
@@ -345,11 +329,14 @@ public class Board extends JFrame
                         GF = k;
                         buttons[k].setIcon(RedFrog2);
                     }
+                    //selects green frog 
                     else if ((FrogType == "LilyPad"))
 
                     {
+                        //checks to see a green frog is selected and then uses the legalmove function to verify the move is legal and then moves the green frog to the selected location
                         if (GreenFrogSelected == true)
                         {
+                            //resets the variable so that the greenfrog is deselected
                             GreenFrogSelected = false;
                             int LP = k;
                             boolean BooleanIsMovLeg = LegalMove(GF,LP);
@@ -362,8 +349,10 @@ public class Board extends JFrame
                                 buttons[GF].setIcon(LilyPad);
                             }
                         }
+                        //checks to see a red frog is selected and then uses the legalmove function to verify the move is legal and then moves the red frog to the selected location
                         else if (RedFrogSelected == true)
                         {
+                            //resets the variable so that the greenfrog is deselected
                             RedFrogSelected = false;
                             int LP = k;
                             boolean BooleanIsMovLeg = LegalMove(GF,LP);
@@ -377,16 +366,17 @@ public class Board extends JFrame
                             }
                         }
                     }
+                    //if a lilypad is pressed it deselects any green or red frogs selected
                     else if (FrogType == "Water")
                     {
                         RedFrogSelected = false;
                         GreenFrogSelected = false;
                     }
-
+                //checks to see if the game is won and if so prints out a nice message informing the user they have won
                 boolean Won = GameWon();
                 if (Won == true)
                 {
-                    System.out.println("Congratulations you have won!!");
+                    System.out.println("Congratulations, you have won!!");
                 }  
                 }
             });
