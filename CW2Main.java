@@ -3,7 +3,7 @@ public class CW2Main
 /**
 *This class is the main class which utilises the other classes to run the game.
 *@author George Singleton
-*@version 2.1
+*@version 2.2
 */
     public static void main(String[] arguments)
     {
